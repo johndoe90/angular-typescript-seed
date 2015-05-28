@@ -4,7 +4,8 @@
   "description": "seed for angularjs typescript requirejs project",
   "main": "app/main.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+		"install": "tsd reinstall"
   },
   "repository": {
     "type": "git",
