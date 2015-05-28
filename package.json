@@ -1,0 +1,48 @@
+{
+  "name": "angular-typescript-seed",
+  "version": "0.0.1",
+  "description": "seed for angularjs typescript requirejs project",
+  "main": "app/main.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johndoe90/angular-typescript-seed.git"
+  },
+  "keywords": [
+    "angularjs",
+    "requirejs",
+    "typescript"
+  ],
+  "author": "Phillip Friedrich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johndoe90/angular-typescript-seed/issues"
+  },
+  "homepage": "https://github.com/johndoe90/angular-typescript-seed",
+  "dependencies": {
+    "angular": "^1.4.0",
+    "angular-ui-router": "^0.2.15",
+    "requirejs": "^2.1.17"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.4.0",
+    "connect-livereload": "^0.5.3",
+    "express": "^4.12.4",
+    "gulp": "^3.8.11",
+    "gulp-inject": "^1.2.0",
+    "gulp-sass": "^2.0.1",
+    "gulp-shell": "^0.4.1",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-typescript": "^2.7.5",
+    "gulp-util": "^3.0.4",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.33",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-jasmine": "^0.3.5",
+    "karma-requirejs": "^0.2.2",
+    "tiny-lr": "^0.1.5",
+    "typescript": "^1.5.0-beta"
+  }
+}
