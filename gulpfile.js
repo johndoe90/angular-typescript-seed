@@ -1,16 +1,15 @@
 var gulp = require('gulp');
 var path = require('path');
+var gulpif = require('gulp-if');
 var sass = require('gulp-sass');
-var tinyLr = require('tiny-lr');
 var config = require('./config');
 var gutil = require('gulp-util');
-var express = require('express');
 var shell = require('gulp-shell');
+var concat = require('gulp-concat');
 var inject = require('gulp-inject');
 var ts = require('gulp-typescript');
-var typescript = require('typescript');
+var connect = require('gulp-connect');
 var sourcemaps = require('gulp-sourcemaps');
-var connectLr = require('connect-livereload');
 
 function joinArrays() {
     var result = [];
@@ -20,32 +19,19 @@ function joinArrays() {
     return result;
 }
 
-function notifyLr(event) {
-    tinyLr.changed({
-        body: {
-            files: [path.relative(__dirname, event.path)]
-        }
-    })
-}
-
-gulp.task('express', function() {
-    var app = express();
-
-    app.use(connectLr());
-    app.use(express.static(__dirname));
-    app.listen(config.dev.express.serverport);
-
-    tinyLr = tinyLr();
-    tinyLr.listen(config.dev.express.livereloadport);
+gulp.task('connect', function() {
+    connect.server(config.connect);
 });
 
-gulp.task('index', function() {
-    var target = gulp.src(config.paths.base + 'index.html');
-    var sources = gulp.src(joinArrays(config.globs.css), {read: false});
+gulp.task('index', ['scss'], function() {
+    var sourceGlob = config.env.isProd ? config.paths.dist.css + '**/*.css' : config.globs.css;
+
+    var target = gulp.src('index.html');
+    var sources = gulp.src(sourceGlob, {read: false});
 
     return target
         .pipe(inject(sources))
-        .pipe(gulp.dest(config.paths.base));
+        .pipe(gulp.dest(config.env.isProd ? config.paths.dist.base : './'));
 });
 
 gulp.task('test', function() {
@@ -60,24 +46,46 @@ gulp.task('typescript', function() {
     return gulp
         .src(config.globs.typescript)
         .pipe(sourcemaps.init())
-        .pipe(ts({
-            module: 'amd',
-            typescript: typescript
-        })).js
+        .pipe(ts(config.ts)).js
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(config.paths.base));
+        .pipe(gulp.dest(config.paths.base))
+        .pipe(connect.reload());
 });
 
 gulp.task('scss', function() {
+    // write css to the right path depending on env
+   var dest = config.env.isProd ? config.paths.dist.css : config.paths.base;
+
    return gulp
        .src(config.globs.scss)
-       .pipe(sass())
-       .pipe(gulp.dest(config.paths.base));
+
+       // if isDev -> init sourcemaps
+       .pipe(gulpif(config.env.isDev, sourcemaps.init()))
+
+       //compile sass to css
+       .pipe(sass(config.sass))
+
+       //if isProd -> put everything in one file
+       .pipe(gulpif(config.env.isProd, concat('styles.css')))
+
+       //if isDev -> write sourcemap file
+       .pipe(gulpif(config.env.isDev, sourcemaps.write('./', {includeContent: false, sourceRoot: ''})))
+
+       //if isProd -> write everything to file
+       .pipe(gulp.dest(dest))
+
+       //if isDev -> livereload
+       .pipe(gulpif(config.env.isDev, connect.reload()));
+});
+
+gulp.task('html', function() {
+   return gulp
+       .src(config.globs.html)
+       .pipe(connect.reload());
 });
 
 gulp.task('watch:nocompile', function() {
-    gulp.watch(config.globs.css, notifyLr);
-    gulp.watch(config.globs.html, notifyLr);
+    gulp.watch(config.globs.html, ['html']);
     gulp.watch(config.globs.scss, ['scss']);
 });
 
@@ -85,6 +93,6 @@ gulp.task('watch', ['watch:nocompile'], function() {
     gulp.watch(config.globs.typescript, ['typescript']);
 });
 
-gulp.task('default', ['express', 'scss', 'index', 'watch', 'test']);
+gulp.task('default', ['connect', 'scss', 'index', 'watch', 'test']);
 
-gulp.task('nocompile', ['express', 'scss', 'index', 'watch:nocompile', 'test']);
+gulp.task('nocompile', ['connect', 'scss', 'index', 'watch:nocompile', 'test']);

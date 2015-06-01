@@ -2,7 +2,7 @@
 
 'use strict';
 
-import angular = require('angular');
+import * as angular from 'angular';
 import {stateOneModule} from 'states/stateOne/stateOneModule';
 import {greeterModule} from 'components/greeter/greeterModule';
 

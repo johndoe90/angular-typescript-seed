@@ -1,7 +1,6 @@
 /// <reference path="./../../references.ts" />
 
-import angular = require('angular');
-
+import * as angular from 'angular';
 import {StateOneController} from './stateOneController';
 import {IStateOneController} from './stateOneController';
 
