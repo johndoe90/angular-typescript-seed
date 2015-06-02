@@ -28,6 +28,7 @@ config.globs = {
     specs: [config.paths.base + '**/*Spec.js'],
     typescript: [config.paths.base + '**/*.ts'],
     javascript: [config.paths.base + '**/*.js'],
+    partials: [config.paths.base + '**/*Partial.html'],
     html: ['index.html', config.paths.base + '**/*.html']
 };
 

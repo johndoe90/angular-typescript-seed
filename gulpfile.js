@@ -3,12 +3,15 @@ var path = require('path');
 var gulpif = require('gulp-if');
 var sass = require('gulp-sass');
 var config = require('./config');
+var concat = require('gulp-concat');
 var gutil = require('gulp-util');
 var shell = require('gulp-shell');
 var concat = require('gulp-concat');
 var inject = require('gulp-inject');
 var ts = require('gulp-typescript');
+var cdnizer = require('gulp-cdnizer');
 var connect = require('gulp-connect');
+var ngHtml2Js = require("gulp-ng-html2js");
 var sourcemaps = require('gulp-sourcemaps');
 
 function joinArrays() {
@@ -18,6 +21,22 @@ function joinArrays() {
 
     return result;
 }
+
+gulp.task('partials', function() {
+  return gulp
+      .src(config.globs.partials)
+      .pipe(cdnizer({
+        defaultCDNBase: 'dist',
+        defaultCDN: '${ defaultCDNBase }/${ filename }',
+        files: ['**/*.{gif,png,jpg,jpeg}']
+      }))
+      .pipe(ngHtml2Js({
+        moduleName: 'app'
+      }))
+      .pipe(concat('partials.js'))
+      .pipe(gulp.dest('./dist'));
+
+});
 
 gulp.task('connect', function() {
     connect.server(config.connect);
