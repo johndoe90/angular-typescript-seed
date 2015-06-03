@@ -1,9 +1,9 @@
 var gulp = require('gulp');
 var path = require('path');
+var copy = require('gulp-copy');
 var gulpif = require('gulp-if');
 var sass = require('gulp-sass');
 var config = require('./config');
-var concat = require('gulp-concat');
 var gutil = require('gulp-util');
 var shell = require('gulp-shell');
 var concat = require('gulp-concat');
@@ -35,15 +35,29 @@ gulp.task('partials', function() {
       }))
       .pipe(concat('partials.js'))
       .pipe(gulp.dest('./dist'));
-
 });
 
 gulp.task('connect', function() {
     connect.server(config.connect);
 });
 
-gulp.task('index', ['scss'], function() {
-    var sourceGlob = config.env.isProd ? config.paths.dist.css + '**/*.css' : config.globs.css;
+gulp.task('build', [], function() {
+    return gulp
+        .src('')
+        .pipe(shell([
+            'node node_modules/requirejs/bin/r.js -o build.js'
+        ]));
+});
+
+gulp.task('index', ['scss', 'build'], function() {
+    var sourceGlob = [];
+
+    if ( config.env.isProd ) {
+        sourceGlob.push(config.paths.dist.js + 'build.js');
+        sourceGlob.push(config.paths.dist.css + '**/*.css');
+    } else {
+        sourceGlob.push(config.globs.css);
+    }
 
     var target = gulp.src('index.html');
     var sources = gulp.src(sourceGlob, {read: false});
@@ -53,7 +67,7 @@ gulp.task('index', ['scss'], function() {
         .pipe(gulp.dest(config.env.isProd ? config.paths.dist.base : './'));
 });
 
-gulp.task('test', function() {
+gulp.task('test', ['typescript'], function() {
    return gulp
        .src('')
        .pipe(shell([
@@ -101,6 +115,14 @@ gulp.task('html', function() {
    return gulp
        .src(config.globs.html)
        .pipe(connect.reload());
+});
+
+gulp.task('img', function() {
+    console.log('ffff');
+
+   return gulp
+       .src(config.globs.images)
+       .pipe(gulpif(config.env.isDev, copy(config.paths.dist.img, {prefix: 100})));
 });
 
 gulp.task('watch:nocompile', function() {

@@ -13,4 +13,5 @@ define(["require", "exports"], function (require, exports) {
     })();
     exports.GreeterService = GreeterService;
 });
-//# sourceMappingURL=greeterService.js.map
+
+//# sourceMappingURL=../../components/greeter/greeterService.js.map

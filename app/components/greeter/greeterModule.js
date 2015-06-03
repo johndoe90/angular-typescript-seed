@@ -6,4 +6,5 @@ define(["require", "exports", 'angular', './greeterService', './greeterDirective
         .service('greeterService', greeterService_1.GreeterService)
         .directive('greeterDirective', greeterDirective_1.GreeterDirective.Factory());
 });
-//# sourceMappingURL=greeterModule.js.map
+
+//# sourceMappingURL=../../components/greeter/greeterModule.js.map

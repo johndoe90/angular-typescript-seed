@@ -1,1 +1,1 @@
-{"version":3,"file":"references.js","sourceRoot":"","sources":["references.ts"],"names":[],"mappings":"AAAA,4CAA4C"}
+{"version":3,"sources":["references.ts"],"names":[],"mappings":"AAAA,4CAA4C","file":"references.js","sourcesContent":["/// <reference path=\"../typings/tsd.d.ts\" />"],"sourceRoot":"/source/"}

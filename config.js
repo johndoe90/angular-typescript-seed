@@ -29,12 +29,14 @@ config.globs = {
     typescript: [config.paths.base + '**/*.ts'],
     javascript: [config.paths.base + '**/*.js'],
     partials: [config.paths.base + '**/*Partial.html'],
-    html: ['index.html', config.paths.base + '**/*.html']
+    html: ['index.html', config.paths.base + '**/*.html'],
+    images: [config.paths.base + '**/*.jpg']
 };
 
 /* connect config */
 config.connect = {
     port: 4000,
+    root: config.env.isProd ? './dist' : './',
     livereload: config.env.isProd ? false : {
         port: 35729
     }
