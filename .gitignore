@@ -1,3 +1,6 @@
+#ignore gedit temp files
+#*.*~
+
 #exclude npm dependencies
 node_modules
 
@@ -21,7 +24,6 @@ app/**/*.js.map
 
 #ignore all generated css files
 app/**/*.css
-!app/**/static/css/**/*.css
 
 #ignore all generated css sourcemaps
 app/**/*.css.map

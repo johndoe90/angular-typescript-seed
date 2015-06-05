@@ -1,3 +1,6 @@
+#ignore gedit temp files
+#*.*~
+
 #exclude npm dependencies
 node_modules
 
