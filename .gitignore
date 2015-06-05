@@ -1,6 +1,7 @@
 #exclude npm dependencies
 node_modules
 
+#exclude build directory
 dist
 
 #only keep tsd.d.ts
@@ -9,3 +10,18 @@ typings/**
 
 #webstorm files
 .idea
+
+#ignore all generated js files
+app/**/*.js
+!app/main.js
+!app/**/static/js/**/*.js
+
+#ignore all generated js sourcemaps
+app/**/*.js.map
+
+#ignore all generated css files
+app/**/*.css
+!app/**/static/css/**/*.css
+
+#ignore all generated css sourcemaps
+app/**/*.css.map
