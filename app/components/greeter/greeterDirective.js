@@ -27,3 +27,5 @@ define(["require", "exports"], function (require, exports) {
     })();
     exports.GreeterDirective = GreeterDirective;
 });
+
+//# sourceMappingURL=../../components/greeter/greeterDirective.js.map

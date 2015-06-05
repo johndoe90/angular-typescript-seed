@@ -8,3 +8,5 @@ define(["require", "exports", 'angular', './partials', 'states/stateOne/stateOne
         .module('app', ['ui.router', partials_1.partialsModule.name, greeterModule_1.greeterModule.name, stateOneModule_1.stateOneModule.name])
         .config(configuration);
 });
+
+//# sourceMappingURL=appModule.js.map

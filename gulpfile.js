@@ -191,7 +191,7 @@ gulp.task('watch:nocompile', function() {
 });
 
 gulp.task('watch', ['watch:nocompile'], function() {
-    gulp.watch(['app/**/*.ts'], ['js']);
+    gulp.watch(['app/**/*.ts', '!app/partials.ts'], ['js']);
 });
 
 gulp.task('clean', function(cb) {
