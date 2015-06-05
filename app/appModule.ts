@@ -3,6 +3,7 @@
 'use strict';
 
 import * as angular from 'angular';
+import {partialsModule} from './partials';
 import {stateOneModule} from 'states/stateOne/stateOneModule';
 import {greeterModule} from 'components/greeter/greeterModule';
 
@@ -11,5 +12,5 @@ function configuration(): void {
 }
 
 export var appModule = angular
-    .module('app', ['ui.router', greeterModule.name, stateOneModule.name])
+    .module('app', ['ui.router', partialsModule.name, greeterModule.name, stateOneModule.name])
     .config(configuration);

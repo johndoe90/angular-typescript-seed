@@ -20,5 +20,3 @@ define(["require", "exports", 'angular', './stateOneModule', './stateOneControll
         });
     });
 });
-
-//# sourceMappingURL=../../states/stateOne/stateOneControllerSpec.js.map
