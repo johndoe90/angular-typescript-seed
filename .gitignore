@@ -1,6 +1,8 @@
 #exclude npm dependencies
 node_modules
 
+dist
+
 #only keep tsd.d.ts
 typings/**
 !typings/tsd.d.ts
