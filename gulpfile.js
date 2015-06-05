@@ -74,7 +74,7 @@ gulp.task('connect', function() {
     plugins.connect.server({
         port: 4000,
         livereload: true,
-        root: isProd ? 'dist' : './'
+        root: isProd ? 'dist' : __dirname
     });
 });
 
