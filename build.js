@@ -7,7 +7,7 @@
 	},
 	name: 'main',
 	out: 'dist/public/js/build.js',
-	optimize: 'none',
+	//optimize: 'none',
 	include: ['requireLib'],
 	preserveLicenseComments: false,
 	mainConfigFile: 'app/main.js'

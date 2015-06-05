@@ -4,6 +4,7 @@ import * as angular from 'angular';
 import {StateOneController} from './stateOneController';
 import {IStateOneController} from './stateOneController';
 
+configuration.$inject = ['$stateProvider', '$urlRouterProvider'];
 function configuration($stateProvider: angular.ui.IStateProvider,
                        $urlRouterProvider: angular.ui.IUrlRouterProvider): void {
 
@@ -11,7 +12,6 @@ function configuration($stateProvider: angular.ui.IStateProvider,
         .state('stateOne', {
             url: '/stateOne',
             controller: 'stateOneController as stateOneController',
-            //controllerAs: 'stateOneController',
             templateUrl: 'app/states/stateOne/stateOnePartial.html'
         });
 

@@ -74,7 +74,7 @@ gulp.task('connect', function() {
     plugins.connect.server({
         port: 4000,
         livereload: true,
-				root: isProd ? 'dist' : '.'
+        root: isProd ? 'dist' : './'
     });
 });
 
@@ -205,11 +205,11 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('default', function(cb) {
-	runSequence('clean', ['connect', 'css', 'img', 'js', 'index', 'watch'], cb);
+	runSequence('clean', ['connect', 'css', 'img', 'js', 'index', 'test'], 'watch', cb);
 });
 
 gulp.task('nocompile', function(cb) {
-	runSequence('clean', ['connect', 'css', 'img', 'js', 'index', 'watch:nocompile'], cb);
+	runSequence('clean', ['connect', 'css', 'img', 'js', 'index', 'test'], 'watch:nocompile', cb);
 });
 
 gulp.task('build', function(cb) {

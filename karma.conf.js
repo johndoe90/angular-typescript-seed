@@ -1,8 +1,6 @@
 // Karma configuration
 // Generated on Thu May 28 2015 18:33:26 GMT+0200 (CEST)
 
-var conf = require('./config');
-
 module.exports = function(config) {
   config.set({
 
@@ -17,9 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: conf.paths.node_modules + 'angular/angular.js', included: false},
-      {pattern: conf.paths.node_modules + 'angular-mocks/angular-mocks.js', included: false},
-      {pattern: conf.paths.node_modules + 'angular-ui-router/build/angular-ui-router.js', included: false},
+      {pattern: 'node_modules/angular/angular.js', included: false},
+      {pattern: 'node_modules/angular-mocks/angular-mocks.js', included: false},
+      {pattern: 'node_modules/angular-ui-router/build/angular-ui-router.js', included: false},
       {pattern: 'app/**/*.js', included: false},
 
       'test-main.js'
@@ -28,7 +26,8 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-        conf.paths.base + 'main.js'
+        'app/main.js',
+        'app/partials.js'
     ],
 
 
