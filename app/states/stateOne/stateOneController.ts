@@ -13,6 +13,8 @@ export class StateOneController implements IStateOneController {
 
     static $inject = ['greeterService'];
     constructor(private greeterService: IGreeterService) {
+
+        console.log('state one controller');
     }
 
     greet(): string {

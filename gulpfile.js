@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var typescript = require('typescript');
 var runSequence = require('run-sequence');
 var gulpLoadPlugins = require('gulp-load-plugins');
+var history = require('connect-history-api-fallback');
 var plugins = gulpLoadPlugins({
 	rename: {
 		'gulp-if': 'gulpif'
@@ -11,6 +12,48 @@ var plugins = gulpLoadPlugins({
 
 //also set isProd to true if 'build' task is executed
 var isProd = process.env.NODE_ENV === 'production' || (process.argv.length >= 2 && process.argv[2] === 'build');
+
+var langs = ['en', 'de'];
+var fallbackLang = 'en';
+
+function isResource(url) {
+    return url.indexOf('.') !== -1;
+}
+
+//adds the 'Accept-Language' http header to response, so that the app can serve the correct language
+function addLanguageHeaderToResponseMiddleware(req, res, next) {
+    var url = req.url;
+
+    if ( isResource(url) )
+        return next();
+
+    for ( var i = 0; i < langs.length; i++ ) {
+        if ( url.indexOf('/' + langs[i]) === 0 )
+            return next();
+    }
+
+    // TODO try all languages and find the best
+    var useLang = fallbackLang;
+    if ( req.headers['accept-language'] ) {
+        useLang = req.headers['accept-language'].slice(0, 2);
+        useLang = useLang in langs ? useLang : fallbackLang;
+    }
+
+    res.writeHead(302, {
+        Location: '/' + useLang + url
+    });
+
+    return res.end();
+}
+
+function stripLanguageMiddleware(req, res, next) {
+    if ( isResource(req.url) )
+        return next();
+
+    req.url = req.url.slice(3);
+
+    return next();
+}
 
 gulp.task('img', function(cb) {
 	var stream = gulp
@@ -74,7 +117,11 @@ gulp.task('connect', function() {
     plugins.connect.server({
         port: 4000,
         livereload: true,
-        root: isProd ? 'dist' : __dirname
+        root: isProd ? 'dist' : __dirname,
+
+        middleware: function(connect, opt) {
+            return [ addLanguageHeaderToResponseMiddleware, stripLanguageMiddleware, history() ];
+        }
     });
 });
 
@@ -124,18 +171,18 @@ gulp.task('index', ['css', 'js'], function() {
     var sourceGlob = [];
 
     if ( isProd ) {
-        sourceGlob.push('dist/public/js/build.js');
-        sourceGlob.push('dist/public/css/*.css');
+        sourceGlob.push('public/js/build.js');
+        sourceGlob.push('public/css/*.css');
     } else {
         sourceGlob.push('app/**/*.css');
     }
 
     var target = gulp.src('index.html');
-    var sources = gulp.src(sourceGlob, {read: false});
+    var sources = gulp.src(sourceGlob, {read: false, cwd: isProd ? 'dist' : './'});
 
     return target
         .pipe(plugins.gulpif(isProd, gulp.dest('dist')))
-        .pipe(plugins.inject(sources, {relative: true}))
+        .pipe(plugins.inject(sources))
         .pipe(gulp.dest(isProd ? 'dist' : './'));
 });
 

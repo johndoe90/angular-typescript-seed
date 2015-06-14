@@ -7,7 +7,10 @@ import {partialsModule} from './partials';
 import {stateOneModule} from 'states/stateOne/stateOneModule';
 import {greeterModule} from 'components/greeter/greeterModule';
 
-function configuration(): void {
+configuration.$inject = ['$locationProvider'];
+function configuration($locationProvider: ng.ILocationProvider): void {
+    $locationProvider.html5Mode(true);
+
     console.log('APP MODULE CONFIGURATION');
 }
 
