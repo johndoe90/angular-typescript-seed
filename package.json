@@ -28,6 +28,7 @@
     "requirejs": "^2.1.17"
   },
   "devDependencies": {
+    "accept-language-parser": "^1.0.2",
     "angular-mocks": "^1.4.0",
     "connect-history-api-fallback": "^1.1.0",
     "del": "^1.2.0",

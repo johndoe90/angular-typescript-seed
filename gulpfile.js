@@ -2,6 +2,7 @@ var del = require('del');
 var gulp = require('gulp');
 var typescript = require('typescript');
 var runSequence = require('run-sequence');
+var parser = require('accept-language-parser');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var history = require('connect-history-api-fallback');
 var plugins = gulpLoadPlugins({
@@ -14,7 +15,7 @@ var plugins = gulpLoadPlugins({
 var isProd = process.env.NODE_ENV === 'production' || (process.argv.length >= 2 && process.argv[2] === 'build');
 
 var langs = ['en', 'de'];
-var fallbackLang = 'en';
+var defaultLang = 'en';
 
 function isResource(url) {
     return url.indexOf('.') !== -1;
@@ -24,20 +25,26 @@ function isResource(url) {
 function addLanguageHeaderToResponseMiddleware(req, res, next) {
     var url = req.url;
 
+		//ignore resources, as they do not have the lang-prefix
     if ( isResource(url) )
         return next();
 
+		// at this point only index.html will be served, check whether a lang-prefix is present
     for ( var i = 0; i < langs.length; i++ ) {
         if ( url.indexOf('/' + langs[i]) === 0 )
             return next();
     }
 
-    // TODO try all languages and find the best
-    var useLang = fallbackLang;
-    if ( req.headers['accept-language'] ) {
-        useLang = req.headers['accept-language'].slice(0, 2);
-        useLang = useLang in langs ? useLang : fallbackLang;
-    }
+		// check if one of the requested languages matches the supported languages
+		// if so, take the preferred language, otherwise use default language
+		var useLang = defaultLang;
+		var acceptsLanguages = parser.parse(req.headers['accept-language']);
+		for ( var i = 0, length = acceptsLanguages.length; i < length; i++ ) {
+				if ( langs.indexOf(acceptsLanguages[i].code) !== -1 ) {
+						useLang = acceptsLanguages[i].code;
+						break;
+				}
+		}
 
     res.writeHead(302, {
         Location: '/' + useLang + url
