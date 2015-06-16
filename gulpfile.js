@@ -17,34 +17,40 @@ var isProd = process.env.NODE_ENV === 'production' || (process.argv.length >= 2 
 var langs = ['en', 'de'];
 var defaultLang = 'en';
 
-function isResource(url) {
-    return url.indexOf('.') !== -1;
+function isState(req) {
+	var headers = req.headers;
+	if ( req.method !== 'GET' ) return false;
+	if ( !headers || typeof headers.accept !== 'string' ) return false;
+	if ( headers.accept.indexOf('text/html') === -1 && headers.accept.indexOf('*/*') === -1 ) return false;
+	if ( req.url.indexOf('.') !== -1 ) return false;  
+	
+	return true;
 }
 
 //adds the 'Accept-Language' http header to response, so that the app can serve the correct language
-function addLanguageHeaderToResponseMiddleware(req, res, next) {
+function addLanguageMiddleware(req, res, next) {
     var url = req.url;
 
-		//ignore resources, as they do not have the lang-prefix
-    if ( isResource(url) )
+	//ignore resources, as they do not have the lang-prefix
+    if ( !isState(req) )
         return next();
 
-		// at this point only index.html will be served, check whether a lang-prefix is present
+	// at this point only index.html will be served, check whether a lang-prefix is present
     for ( var i = 0; i < langs.length; i++ ) {
         if ( url.indexOf('/' + langs[i]) === 0 )
             return next();
     }
 
-		// check if one of the requested languages matches the supported languages
-		// if so, take the preferred language, otherwise use default language
-		var useLang = defaultLang;
-		var acceptsLanguages = parser.parse(req.headers['accept-language']);
-		for ( var i = 0, length = acceptsLanguages.length; i < length; i++ ) {
-				if ( langs.indexOf(acceptsLanguages[i].code) !== -1 ) {
-						useLang = acceptsLanguages[i].code;
-						break;
-				}
+	// check if one of the requested languages matches the supported languages
+	// if so, take the preferred language, otherwise use default language
+	var useLang = defaultLang;
+	var acceptsLanguages = parser.parse(req.headers['accept-language']);
+	for ( var i = 0, length = acceptsLanguages.length; i < length; i++ ) {
+		if ( langs.indexOf(acceptsLanguages[i].code) !== -1 ) {
+			useLang = acceptsLanguages[i].code;
+			break;
 		}
+	}
 
     res.writeHead(302, {
         Location: '/' + useLang + url
@@ -54,12 +60,20 @@ function addLanguageHeaderToResponseMiddleware(req, res, next) {
 }
 
 function stripLanguageMiddleware(req, res, next) {
-    if ( isResource(req.url) )
+    if ( !isState(req) )
         return next();
 
     req.url = req.url.slice(3);
 
     return next();
+}
+
+function serveIndexMiddleware(req, res, next) {
+	if ( !isState(req) ) 
+		return next();
+	
+	req.url = '/index.html';
+	next();
 }
 
 gulp.task('img', function(cb) {
@@ -127,7 +141,7 @@ gulp.task('connect', function() {
         root: isProd ? 'dist' : __dirname,
 
         middleware: function(connect, opt) {
-            return [ addLanguageHeaderToResponseMiddleware, stripLanguageMiddleware, history() ];
+            return [ addLanguageMiddleware, stripLanguageMiddleware, serveIndexMiddleware ];
         }
     });
 });
