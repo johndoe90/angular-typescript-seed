@@ -208,7 +208,8 @@ gulp.task('index', ['css', 'js'], function() {
 });
 
 gulp.task('test', ['typescript'], function() {
-   return gulp
+	// do not return, as this task keeps running and this messes with runSequence  
+	gulp
        .src('')
        .pipe(plugins.shell([
            'node_modules/karma/bin/karma start'

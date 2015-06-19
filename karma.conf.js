@@ -18,6 +18,7 @@ module.exports = function(config) {
       {pattern: 'node_modules/angular/angular.js', included: false},
       {pattern: 'node_modules/angular-mocks/angular-mocks.js', included: false},
       {pattern: 'node_modules/angular-ui-router/build/angular-ui-router.js', included: false},
+			{pattern: 'node_modules/angular-translate/dist/angular-translate.js', included: false},
       {pattern: 'app/**/*.js', included: false},
 
       'test-main.js'

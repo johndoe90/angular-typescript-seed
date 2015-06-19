@@ -16,7 +16,8 @@ require.config({
   paths: {
     'angular': '../node_modules/angular/angular',
     'angular-mock': '../node_modules/angular-mocks/angular-mocks',
-    'angular-ui-router': '../node_modules/angular-ui-router/build/angular-ui-router'
+    'angular-ui-router': '../node_modules/angular-ui-router/build/angular-ui-router',
+		'angular-translate': '../node_modules/angular-translate/dist/angular-translate'
   },
 
   shim: {
@@ -30,7 +31,11 @@ require.config({
 
     'angular-ui-router': {
       deps: ['angular']
-    }
+    },
+
+		'angular-translate': {
+			deps: ['angular']
+		}
   }
 });
 

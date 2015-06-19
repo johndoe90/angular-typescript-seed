@@ -24,6 +24,7 @@
   "homepage": "https://github.com/johndoe90/angular-typescript-seed",
   "dependencies": {
     "angular": "^1.4.0",
+    "angular-translate": "^2.7.2",
     "angular-ui-router": "^0.2.15",
     "requirejs": "^2.1.17"
   },

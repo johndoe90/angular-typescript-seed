@@ -12,7 +12,8 @@ function configuration($stateProvider: angular.ui.IStateProvider,
         .state('app', {
             abstract: true,
             url: '/{lang:(?:en|de)}',
-            template: '<ui-view />'
+            template: '<ui-view />',
+            controller: 'appController'
         })
         .state('app.stateOne', {
             url: '/',
