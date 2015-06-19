@@ -17,7 +17,7 @@ require.config({
     'angular': '../node_modules/angular/angular',
     'angular-mock': '../node_modules/angular-mocks/angular-mocks',
     'angular-ui-router': '../node_modules/angular-ui-router/build/angular-ui-router',
-		'angular-translate': '../node_modules/angular-translate/dist/angular-translate'
+    'angular-translate': '../node_modules/angular-translate/dist/angular-translate'
   },
 
   shim: {
@@ -33,17 +33,15 @@ require.config({
       deps: ['angular']
     },
 
-		'angular-translate': {
-			deps: ['angular']
-		}
+    'angular-translate': {
+		deps: ['angular']
+	}
   }
 });
 
 // wait until angular completely setup before we load the tests
 // this way I can just require angular and expect everything to be already loaded
-require(['angular', 'angular-mock', 'angular-ui-router'], function() {
-
-
+require(['angular', 'angular-mock', 'angular-ui-router', 'angular-translate'], function() {
   require(tests, function() {
     window.__karma__.start();
   });
