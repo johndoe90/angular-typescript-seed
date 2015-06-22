@@ -4,9 +4,9 @@
 
 import * as angular from 'angular';
 import {GreeterService} from './greeterService';
-import {GreeterDirective} from './greeterDirective';
+import {GreeterDirectiveFactory} from './greeterDirective';
 
 export var greeterModule = angular
     .module('greeter', [])
     .service('greeterService', GreeterService)
-    .directive('greeterDirective', GreeterDirective.Factory());
+    .directive('greeterDirective', GreeterDirectiveFactory);

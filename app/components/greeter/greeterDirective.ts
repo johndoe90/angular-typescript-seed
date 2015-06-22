@@ -9,7 +9,7 @@ interface IGreeterScope extends ng.IScope {
     greet(): void;
 }
 
-export class GreeterDirective {
+class GreeterDirective {
 
     public scope = {};
     public restrict = 'AE';
@@ -29,14 +29,9 @@ export class GreeterDirective {
     public greet(scope) {
         this._greeterService.greet(scope.name);
     }
-
-    static Factory() {
-        var directive = (greeterService: IGreeterService) => {
-            return new GreeterDirective(greeterService);
-        };
-
-        directive['$inject'] = ['greeterService'];
-
-        return directive;
-    }
 }
+
+GreeterDirectiveFactory.$inject = ['greeterService'];
+export function GreeterDirectiveFactory(greeterService: IGreeterService) {
+	return new GreeterDirective(greeterService);
+};
